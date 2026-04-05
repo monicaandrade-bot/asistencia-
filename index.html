@@ -1,4 +1,122 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistencia Emocional</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; max-width: 450px; width: 100%; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        h2 { color: #2c3e50; margin-bottom: 5px; }
+        p.subtitle { color: #7f8c8d; font-size: 0.9em; margin-bottom: 20px; }
+        label { display: block; text-align: left; margin: 15px 0 5px; font-weight: bold; color: #34495e; }
+        select, input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #dcdde1; box-sizing: border-box; font-size: 16px; }
+        .frase-caja { background: #e8f4fd; padding: 15px; border-radius: 10px; border-left: 5px solid #3498db; margin: 15px 0; font-style: italic; display: none; color: #2980b9; }
+        button { background: #3498db; color: white; border: none; padding: 18px; width: 100%; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #2980b9; }
+        .success-msg { display: none; color: #27ae60; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+    <h2>🏫 ¡Hola!</h2>
+    <p class="subtitle">Registra tu asistencia y emociones de hoy</p>
+    
+    <label>Nombre Completo:</label>
+    <input type="text" id="nombre" placeholder="Escribre tu nombre...">
+
+    <label>¿Cómo te sientes hoy?</label>
+    <select id="emocion" onchange="actualizarFrase()">
+        <option value="">-- Selecciona una emoción --</option>
+        <option value="Alegre">Alegre 😃</option>
+        <option value="Triste">Triste 😔</option>
+        <option value="Cansado">Cansado 🥱</option>
+        <option value="Molesto">Molesto 😠</option>
+        <option value="Ansioso">Ansioso 😰</option>
+        <option value="Motivado">Motivado 🚀</option>
+        <option value="Aburrido">Aburrido 😑</option>
+        <option value="Agradecido">Agradecido 🙏</option>
+        <option value="Preocupado">Preocupado 😟</option>
+        <option value="Orgulloso">Orgulloso ⭐</option>
+    </select>
+
+    <div id="cajaFrase" class="frase-caja"></div>
+
+    <label>Mis 3 acciones para hoy:</label>
+    <input type="text" id="a1" placeholder="1. Acción escolar o emocional">
+    <input type="text" id="a2" placeholder="2. Acción escolar o emocional">
+    <input type="text" id="a3" placeholder="3. Acción escolar o emocional">
+
+    <button onclick="enviarDatos()">✅ Registrar Asistencia</button>
+    <p id="mensajeExito" class="success-msg">¡Asistencia enviada! Que tengas un gran día. ✨</p>
+</div>
+
+<script>
+    const frases = {
+        "Alegre": "¡Tu energía es contagiosa! Aprovecha este impulso para brillar.",
+        "Triste": "Se vale no estar bien. Mañana será una nueva oportunidad.",
+        "Cansado": "Escucha a tu cuerpo. Un paso a la vez también te lleva a la meta.",
+        "Molesto": "Respira profundo. No dejes que un momento amargo defina tu día.",
+        "Ansioso": "Concéntrate en el aquí y el ahora. Todo estará bien.",
+        "Motivado": "¡Esa es la actitud! Aprovecha este enfoque para conquistar tus metas.",
+        "Aburrido": "A veces la calma es una oportunidad para ser creativo.",
+        "Agradecido": "La gratitud transforma lo que tenemos en suficiente.",
+        "Preocupado": "No cargues con todo solo. Confía en tus capacidades.",
+        "Orgulloso": "¡Felicidades! Reconocer tus logros te hace más grande."
+    };
+
+    function actualizarFrase() {
+        const sel = document.getElementById('emocion').value;
+        const caja = document.getElementById('cajaFrase');
+        if(sel) {
+            caja.innerText = frases[sel];
+            caja.style.display = 'block';
+        } else {
+            caja.style.display = 'none';
+        }
+    }
+
+    function enviarDatos() {
+        const nombre = document.getElementById('nombre').value;
+        const emocion = document.getElementById('emocion').value;
+        const a1 = document.getElementById('a1').value;
+        const a2 = document.getElementById('a2').value;
+        const a3 = document.getElementById('a3').value;
+
+        if(!nombre || !emocion) {
+            alert("Por favor escribe tu nombre y elige una emoción.");
+            return;
+        }
+
+        // URL base del formulario (sin el /viewform)
+        const formURL = "https://docs.google.com/forms/d/e/1FAIpQLScyL7EwlWvuipdpNdCuscFAl-35k61oRErvc7gpKOdw60kuww/formResponse";
+        
+        // Creamos un formulario oculto para enviar los datos
+        const formData = new FormData();
+        formData.append("entry.676686131", nombre);
+        formData.append("entry.375224898", emocion);
+        formData.append("entry.729924200", a1);
+        formData.append("entry.1764392682", a2);
+        formData.append("entry.1393453133", a3);
+
+        // Envío silencioso
+        fetch(formURL, {
+            method: "POST",
+            mode: "no-cors",
+            body: formData
+        }).then(() => {
+            document.getElementById('mensajeExito').style.display = 'block';
+            document.querySelector('button').disabled = true;
+            document.querySelector('button').style.background = '#bdc3c7';
+            setTimeout(() => { location.reload(); }, 3000); // Recarga para el siguiente uso
+        }).catch(err => alert("Error al enviar. Inténtalo de nuevo."));
+    }
+</script>
+
+</body>
+</html>
+!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
