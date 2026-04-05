@@ -1,1 +1,16 @@
+{
+  "name": "Asistencia Emocional Escolar",
+  "short_name": "Asistencia",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f4f7f6",
+  "theme_color": "#3498db",
+  "icons": [
+    {
+      "src": "icono.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
 
