@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistencia Emocional</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f7; color: #333; display: flex; justify-content: center; padding: 20px; }
+        .card { background: white; max-width: 400px; width: 100%; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        h2 { color: #4a90e2; margin-bottom: 10px; }
+        label { display: block; text-align: left; margin: 10px 0 5px; font-weight: bold; }
+        select, input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+        .frase-caja { background: #f9f9f9; padding: 15px; border-left: 5px solid #4a90e2; margin: 10px 0; font-style: italic; min-height: 40px; display: none; }
+        button { background: #25D366; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #128C7E; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🏫 Hola, ¿cómo estás?</h2>
+    <p>Registra tu asistencia y tus metas de hoy.</p>
+    
+    <label>Nombre Completo:</label>
+    <input type="text" id="nombre" placeholder="Escribe tu nombre...">
+
+    <label>¿Cómo te sientes hoy?</label>
+    <select id="emocion" onchange="actualizarFrase()">
+        <option value="">-- Selecciona una emoción --</option>
+        <option value="Alegre">Alegre 😃</option>
+        <option value="Triste">Triste 😔</option>
+        <option value="Cansado">Cansado 🥱</option>
+        <option value="Molesto">Molesto 😠</option>
+        <option value="Ansioso">Ansioso 😰</option>
+        <option value="Motivado">Motivado 🚀</option>
+        <option value="Aburrido">Aburrido 😑</option>
+        <option value="Agradecido">Agradecido 🙏</option>
+        <option value="Preocupado">Preocupado 😟</option>
+        <option value="Orgulloso">Orgulloso ⭐</option>
+    </select>
+
+    <div id="cajaFrase" class="frase-caja"></div>
+
+    <label>Mis 3 acciones para hoy:</label>
+    <input type="text" id="a1" placeholder="1. Acción escolar o emocional">
+    <input type="text" id="a2" placeholder="2. Acción escolar o emocional">
+    <input type="text" id="a3" placeholder="3. Acción escolar o emocional">
+
+    <button onclick="enviarWhatsApp()">✅ Enviar al Maestro</button>
+</div>
+
+<script>
+    const frases = {
+        "Alegre": "¡Tu energía es contagiosa! Aprovecha este impulso para brillar.",
+        "Triste": "Se vale no estar bien. Mañana será una nueva oportunidad.",
+        "Cansado": "Escucha a tu cuerpo. Un paso a la vez también te lleva a la meta.",
+        "Molesto": "Respira profundo. No dejes que un momento amargo defina tu día.",
+        "Ansioso": "Concéntrate en el aquí y el ahora. Todo estará bien.",
+        "Motivado": "¡Esa es la actitud! Aprovecha este enfoque para conquistar tus metas.",
+        "Aburrido": "A veces la calma es una oportunidad para ser creativo.",
+        "Agradecido": "La gratitud transforma lo que tenemos en suficiente.",
+        "Preocupado": "No cargues con todo solo. Confía en tus capacidades.",
+        "Orgulloso": "¡Felicidades! Reconocer tus logros te hace más grande."
+    };
+
+    function actualizarFrase() {
+        const sel = document.getElementById('emocion').value;
+        const caja = document.getElementById('cajaFrase');
+        if(sel) {
+            caja.innerText = frases[sel];
+            caja.style.display = 'block';
+        } else {
+            caja.style.display = 'none';
+        }
+    }
+
+    function enviarWhatsApp() {
+        const nombre = document.getElementById('nombre').value;
+        const emocion = document.getElementById('emocion').value;
+        const a1 = document.getElementById('a1').value;
+        const a2 = document.getElementById('a2').value;
+        const a3 = document.getElementById('a3').value;
+        
+        // --- CAMBIA EL NÚMERO ABAJO (Ejemplo: 521XXXXXXXXXX) ---
+        const miTelefono = 6442589757; 
+
+        if(!nombre || !emocion) {
+            alert("Por favor escribe tu nombre y elige una emoción.");
+            return;
+        }
+
+        const texto = `*ASISTENCIA EMOCIONAL*%0A` +
+                      `*Alumno:* ${nombre}%0A` +
+                      `*Siente:* ${emocion}%0A` +
+                      `*Metas de hoy:*%0A` +
+                      `- ${a1}%0A` +
+                      `- ${a2}%0A` +
+                      `- ${a3}`;
+
+        window.open(`https://wa.me/${miTelefono}?text=${texto}`);
+    }
+</script>
+
+</body>
+</html>
