@@ -11,83 +11,38 @@
     <link rel="apple-touch-icon" href="icono.png">
 
     <style>
-        /* CSS RESET */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        /* FONDO PRINCIPAL CON EMOJIS FLOTANTES */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            /* Fondo base azul suave */
-            background: radial-gradient(circle at center, #f4f7f6 0%, #dcdde1 100%);
-            display: flex; 
-            justify-content: center; 
-            align-items: center; /* Centrar verticalmente */
-            min-height: 100vh; /* Ocupar toda la altura */
-            padding: 20px; 
-            overflow: hidden; /* Evitar barras de desplazamiento por los emojis */
-            position: relative; /* Necesario para los emojis absolutos */
-        }
-
         /* DISEÑO DE LA TARJETA (EFECTO CRISTAL) */
-        .card { 
-            background: rgba(255, 255, 255, 0.85); /* Efecto cristalino más traslúcido */
-            backdrop-filter: blur(15px); /* Desenfoque del fondo */
-            max-width: 450px; 
-            width: 100%; 
-            padding: 30px; 
-            border-radius: 30px; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
-            text-align: center; 
-            position: relative; /* Para que esté por encima de los emojis */
-            z-index: 10; /* Prioridad de capa alta */
-            border: 1px solid rgba(255, 255, 255, 0.4); /* Borde sutil */
-        }
+.card { 
+    background: rgba(255, 255, 255, 0.75); /* Transparencia */
+    backdrop-filter: blur(12px); /* Desenfoque de fondo */
+    -webkit-backdrop-filter: blur(12px);
+    max-width: 450px; 
+    width: 100%; 
+    padding: 30px; 
+    border-radius: 30px; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+    text-align: center; 
+    position: relative; 
+    z-index: 10; 
+    border: 1px solid rgba(255, 255, 255, 0.4); 
+}
 
-        h2 { color: #2c3e50; margin-bottom: 5px; font-size: 24px; }
-        p.subtitle { color: #7f8c8d; font-size: 0.95em; margin-bottom: 25px; }
+/* ESTILO PARA LOS EMOJIS FLOTANTES */
+.emoji-flotante {
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1; 
+    opacity: 0;
+    animation: flotar linear infinite;
+}
 
-        label { display: block; text-align: left; margin: 15px 0 8px; font-weight: bold; color: #34495e; font-size: 15px; }
-        select, input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #dcdde1; box-sizing: border-box; font-size: 16px; transition: 0.3s; background: rgba(255, 255, 255, 0.6); }
-        select:focus, input:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.3); outline: none; }
-
-        .frase-caja { background: rgba(232, 244, 253, 0.9); padding: 18px; border-radius: 12px; border-left: 5px solid #3498db; margin: 20px 0; font-style: italic; display: none; color: #2980b9; line-height: 1.5; font-size: 15px; }
-
-        button { background: #3498db; color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 25px; transition: 0.3s; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
-        button:hover { background: #2980b9; transform: translateY(-2px); }
-        button:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
-
-        .success-msg { display: none; color: #27ae60; font-weight: bold; margin-top: 25px; font-size: 16px; background: rgba(39, 174, 96, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(39, 174, 96, 0.3); }
-
-        /* ESTILO PARA LOS EMOJIS FLOTANTES */
-        .emoji-flotante {
-            position: absolute;
-            font-size: 3rem; /* Tamaño grande de emoji */
-            user-select: none; /* No seleccionable */
-            pointer-events: none; /* No interfiere con clics */
-            z-index: 1; /* Prioridad de capa baja (detrás de la card) */
-            opacity: 0.5; /* Opacidad inicial sutil */
-            animation: flotar 15s ease-in-out infinite, parpadear 3s ease-in-out infinite;
-        }
-
-        /* ANIMACIÓN DE FLOTADO SUAVE (Hacia arriba) */
-        @keyframes flotar {
-            0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0.5; }
-            50% { opacity: 0.8; }
-            100% { transform: translateY(-10vh) translateX(10vw) rotate(360deg); opacity: 0; }
-        }
-
-        /* ANIMACIÓN DE INTERMITENCIA/PARPADEO */
-        @keyframes parpadear {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.1); }
-        }
-
-        /* Media Query para pantallas pequeñas */
-        @media (max-width: 480px) {
-            .card { padding: 25px; }
-            h2 { font-size: 20px; }
-            .emoji-flotante { font-size: 2.5rem; }
-        }
+@keyframes flotar {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+}
     </style>
 </head>
 <body>
@@ -188,42 +143,31 @@
         }
     </script>
 
-    <script>
-        const emojisArr = ['😃', '😔', '🥱', '😠', '😰', '🚀', '😑', '🙏', '😟', '⭐', '❤️', '🔥', '🧠', '✨', '⚡'];
-        const fondo = document.getElementById('fondoEmojis');
 
-        function crearEmoji() {
-            const span = document.createElement('span');
-            span.classList.add('emoji-flotante');
-            
-            // Elegir emoji aleatorio
-            span.innerText = emojisArr[Math.floor(Math.random() * emojisArr.length)];
-            
-            // Posición horizontal aleatoria (0-100% de la anchura)
-            span.style.left = Math.random() * 100 + 'vw';
-            
-            // Duración aleatoria de la animación (más rápido, más lento)
-            span.style.animationDuration = Math.random() * 10 + 10 + 's'; // Entre 10s y 20s
+        <script>
+    const emojisArr = ['😃', '😔', '🥱', '😠', '😰', '🚀', '😑', '🙏', '😟', '⭐', '❤️', '🔥', '🧠', '✨', '⚡'];
+    const fondo = document.getElementById('fondoEmojis');
 
-            // Tamaño aleatorio sutil
-            span.style.fontSize = Math.random() * 1.5 + 2 + 'rem'; // Entre 2rem y 3.5rem
+    function crearEmoji() {
+        const span = document.createElement('span');
+        span.classList.add('emoji-flotante');
+        span.innerText = emojisArr[Math.floor(Math.random() * emojisArr.length)];
+        
+        // Distribución en todo el ancho
+        span.style.left = Math.random() * 100 + 'vw';
+        
+        // Tamaños y velocidades variadas
+        const size = Math.random() * 2 + 1.5; 
+        span.style.fontSize = size + 'rem';
+        const duracion = Math.random() * 8 + 7; 
+        span.style.animationDuration = duracion + 's';
 
-            // Añadir al fondo
-            fondo.appendChild(span);
+        fondo.appendChild(span);
+        setTimeout(() => { span.remove(); }, 15000);
+    }
 
-            // Borrar el emoji después de que termine la animación para no saturar la memoria
-            setTimeout(() => {
-                span.remove();
-            }, 20000); // Borrar después de 20s
-        }
-
-        // Crear un emoji cada segundo
-        setInterval(crearEmoji, 1000);
-
-        // Crear unos iniciales para que no se vea vacío al cargar
-        for(let i=0; i<10; i++) {
-            setTimeout(crearEmoji, i * 200);
-        }
+    // Generar emojis constantemente
+    setInterval(crearEmoji, 500); // Uno cada medio segundo para llenar la pantalla
     </script>
 
 </body>
