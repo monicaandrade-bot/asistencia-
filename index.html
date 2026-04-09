@@ -11,20 +11,21 @@
     <link rel="apple-touch-icon" href="icono.png">
 
     <style>
-        /* DISEÑO DE LA TARJETA (EFECTO CRISTAL) */
-.card { 
-    background: rgba(255, 255, 255, 0.75); /* Transparencia */
-    backdrop-filter: blur(12px); /* Desenfoque de fondo */
-    -webkit-backdrop-filter: blur(12px);
-    max-width: 450px; 
-    width: 100%; 
-    padding: 30px; 
-    border-radius: 30px; 
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
-    text-align: center; 
-    position: relative; 
-    z-index: 10; 
-    border: 1px solid rgba(255, 255, 255, 0.4); 
+       /* FONDO PRINCIPAL CON EMOJIS FLOTANTES Y COLOR RELAJANTE */
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    
+    /* 🎨 NUEVO COLOR: Degradado suave y relajante "Brisa Marina" */
+    background: linear-gradient(135deg, #e3f2fd 0%, #e0f2f1 100%);
+    background-attachment: fixed; /* Mantiene el fondo quieto al hacer scroll */
+
+    display: flex; 
+    justify-content: center; 
+    align-items: center; /* Centrar verticalmente */
+    min-height: 100vh; /* Ocupar toda la altura */
+    padding: 20px; 
+    overflow: hidden; /* Evitar barras de desplazamiento por los emojis */
+    position: relative; /* Necesario para los emojis absolutos */
 }
 
 /* ESTILO PARA LOS EMOJIS FLOTANTES */
