@@ -169,7 +169,20 @@
 
     // Generar emojis constantemente
     setInterval(crearEmoji, 500); // Uno cada medio segundo para llenar la pantalla
-    </script>
+   function crearRecordatorio() {
+    const titulo = "Registrar Asistencia Emocional 🏫";
+    const detalles = "Toca aquí para registrarte: https://monicaandrade-bot.github.io/asistencia-/";
+    
+    // Este enlace abre Google Calendar con todo ya escrito
+    const url = "https://www.google.com/calendar/render?action=TEMPLATE" +
+                "&text=" + encodeURIComponent(titulo) +
+                "&details=" + encodeURIComponent(detalles) +
+                "&recur=RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR" + 
+                "&dates=20260413T080000/20260413T081500"; // Configurado para las 8:00 AM
+
+    window.open(url, '_blank');
+}
+ </script>
 
 </body>
 </html>
