@@ -1,143 +1,232 @@
 <!DOCTYPE html>
 <html lang="es">
- <head>   
- <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#3498db">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="icono.png">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistencia Emocional</title>
+    <title>Asistencia Emocional Escolar</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3498db">
+    <link rel="icon" type="image/png" href="icono.png">
+    <link rel="apple-touch-icon" href="icono.png">
+
     <style>
-       body { 
-    font-family: 'Segoe UI', sans-serif; 
-    /* Fondo con degradado moderno */
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-    display: flex; 
-    justify-content: center; 
-    padding: 20px; 
-    min-height: 100vh;
-}
+        /* CSS RESET */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Animación del fondo */
-@keyframes gradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+        /* FONDO PRINCIPAL CON EMOJIS FLOTANTES */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            /* Fondo base azul suave */
+            background: radial-gradient(circle at center, #f4f7f6 0%, #dcdde1 100%);
+            display: flex; 
+            justify-content: center; 
+            align-items: center; /* Centrar verticalmente */
+            min-height: 100vh; /* Ocupar toda la altura */
+            padding: 20px; 
+            overflow: hidden; /* Evitar barras de desplazamiento por los emojis */
+            position: relative; /* Necesario para los emojis absolutos */
+        }
 
-.card { 
-    background: rgba(255, 255, 255, 0.9); /* Efecto cristalino */
-    backdrop-filter: blur(10px);
-    max-width: 450px; 
-    width: 100%; 
-    padding: 30px; 
-    border-radius: 30px; 
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
-    text-align: center; 
-} 
+        /* DISEÑO DE LA TARJETA (EFECTO CRISTAL) */
+        .card { 
+            background: rgba(255, 255, 255, 0.85); /* Efecto cristalino más traslúcido */
+            backdrop-filter: blur(15px); /* Desenfoque del fondo */
+            max-width: 450px; 
+            width: 100%; 
+            padding: 30px; 
+            border-radius: 30px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+            text-align: center; 
+            position: relative; /* Para que esté por encima de los emojis */
+            z-index: 10; /* Prioridad de capa alta */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Borde sutil */
+        }
+
+        h2 { color: #2c3e50; margin-bottom: 5px; font-size: 24px; }
+        p.subtitle { color: #7f8c8d; font-size: 0.95em; margin-bottom: 25px; }
+
+        label { display: block; text-align: left; margin: 15px 0 8px; font-weight: bold; color: #34495e; font-size: 15px; }
+        select, input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #dcdde1; box-sizing: border-box; font-size: 16px; transition: 0.3s; background: rgba(255, 255, 255, 0.6); }
+        select:focus, input:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.3); outline: none; }
+
+        .frase-caja { background: rgba(232, 244, 253, 0.9); padding: 18px; border-radius: 12px; border-left: 5px solid #3498db; margin: 20px 0; font-style: italic; display: none; color: #2980b9; line-height: 1.5; font-size: 15px; }
+
+        button { background: #3498db; color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 25px; transition: 0.3s; box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
+        button:hover { background: #2980b9; transform: translateY(-2px); }
+        button:disabled { background: #bdc3c7; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .success-msg { display: none; color: #27ae60; font-weight: bold; margin-top: 25px; font-size: 16px; background: rgba(39, 174, 96, 0.1); padding: 12px; border-radius: 10px; border: 1px solid rgba(39, 174, 96, 0.3); }
+
+        /* ESTILO PARA LOS EMOJIS FLOTANTES */
+        .emoji-flotante {
+            position: absolute;
+            font-size: 3rem; /* Tamaño grande de emoji */
+            user-select: none; /* No seleccionable */
+            pointer-events: none; /* No interfiere con clics */
+            z-index: 1; /* Prioridad de capa baja (detrás de la card) */
+            opacity: 0.5; /* Opacidad inicial sutil */
+            animation: flotar 15s ease-in-out infinite, parpadear 3s ease-in-out infinite;
+        }
+
+        /* ANIMACIÓN DE FLOTADO SUAVE (Hacia arriba) */
+        @keyframes flotar {
+            0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) translateX(10vw) rotate(360deg); opacity: 0; }
+        }
+
+        /* ANIMACIÓN DE INTERMITENCIA/PARPADEO */
+        @keyframes parpadear {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+        }
+
+        /* Media Query para pantallas pequeñas */
+        @media (max-width: 480px) {
+            .card { padding: 25px; }
+            h2 { font-size: 20px; }
+            .emoji-flotante { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
 
-<div class="card" id="mainCard">
-    <h2>🏫 ¡Hola!</h2>
-    <p class="subtitle">Registra tu asistencia y emociones de hoy</p>
-    
-    <label>Nombre Completo:</label>
-    <input type="text" id="nombre" placeholder="Escribre tu nombre...">
+    <div id="fondoEmojis"></div>
 
-    <label>¿Cómo te sientes hoy?</label>
-    <select id="emocion" onchange="actualizarFrase()">
-        <option value="">-- Selecciona una emoción --</option>
-        <option value="Alegre">Alegre 😃</option>
-        <option value="Triste">Triste 😔</option>
-        <option value="Cansado">Cansado 🥱</option>
-        <option value="Molesto">Molesto 😠</option>
-        <option value="Ansioso">Ansioso 😰</option>
-        <option value="Motivado">Motivado 🚀</option>
-        <option value="Aburrido">Aburrido 😑</option>
-        <option value="Agradecido">Agradecido 🙏</option>
-        <option value="Preocupado">Preocupado 😟</option>
-        <option value="Orgulloso">Orgulloso ⭐</option>
-    </select>
-
-    <div id="cajaFrase" class="frase-caja"></div>
-
-    <label>Mis 3 acciones para tener un buen y productivo día:</label>
-    <input type="text" id="a1" placeholder="1. Acción escolar o emocional">
-    <input type="text" id="a2" placeholder="2. Acción escolar o emocional">
-    <input type="text" id="a3" placeholder="3. Acción escolar o emocional">
-
-    <button onclick="enviarDatos()">✅ Registrar Asistencia</button>
-    <p id="mensajeExito" class="success-msg">¡Asistencia enviada! Que tengas un gran día. ✨</p>
-</div>
-
-<script>
-    const frases = {
-        "Alegre": "¡Tu energía es contagiosa! Aprovecha este impulso para brillar.",
-        "Triste": "Se vale no estar bien. Mañana será una nueva oportunidad.",
-        "Cansado": "Escucha a tu cuerpo. Un paso a la vez también te lleva a la meta.",
-        "Molesto": "Respira profundo. No dejes que un momento amargo defina tu día.",
-        "Ansioso": "Concéntrate en el aquí y el ahora. Todo estará bien.",
-        "Motivado": "¡Esa es la actitud! Aprovecha este enfoque para conquistar tus metas.",
-        "Aburrido": "A veces la calma es una oportunidad para ser creativo.",
-        "Agradecido": "La gratitud transforma lo que tenemos en suficiente.",
-        "Preocupado": "No cargues con todo solo. Confía en tus capacidades.",
-        "Orgulloso": "¡Felicidades! Reconocer tus logros te hace más grande."
-    };
-
-    function actualizarFrase() {
-        const sel = document.getElementById('emocion').value;
-        const caja = document.getElementById('cajaFrase');
-        if(sel) {
-            caja.innerText = frases[sel];
-            caja.style.display = 'block';
-        } else {
-            caja.style.display = 'none';
-        }
-    }
-
-    function enviarDatos() {
-        const nombre = document.getElementById('nombre').value;
-        const emocion = document.getElementById('emocion').value;
-        const a1 = document.getElementById('a1').value;
-        const a2 = document.getElementById('a2').value;
-        const a3 = document.getElementById('a3').value;
-
-        if(!nombre || !emocion) {
-            alert("Por favor escribe tu nombre y elige una emoción.");
-            return;
-        }
-
-        // URL base del formulario (sin el /viewform)
-        const formURL = "https://docs.google.com/forms/d/e/1FAIpQLScyL7EwlWvuipdpNdCuscFAl-35k61oRErvc7gpKOdw60kuww/formResponse";
+    <div class="card" id="mainCard">
+        <h2>🏫 ¡Hola!</h2>
+        <p class="subtitle">Registra tu asistencia y emociones de hoy</p>
         
-        // Creamos un formulario oculto para enviar los datos
-        const formData = new FormData();
-        formData.append("entry.676686131", nombre);
-        formData.append("entry.375224898", emocion);
-        formData.append("entry.729924200", a1);
-        formData.append("entry.1764392682", a2);
-        formData.append("entry.1393453133", a3);
+        <label>Nombre Completo:</label>
+        <input type="text" id="nombre" placeholder="Escribre tu nombre...">
 
-        // Envío silencioso
-        fetch(formURL, {
-            method: "POST",
-            mode: "no-cors",
-            body: formData
-        }).then(() => {
-            document.getElementById('mensajeExito').style.display = 'block';
-            document.querySelector('button').disabled = true;
-            document.querySelector('button').style.background = '#bdc3c7';
-            setTimeout(() => { location.reload(); }, 3000); // Recarga para el siguiente uso
-        }).catch(err => alert("Error al enviar. Inténtalo de nuevo."));
-    }
-</script>
+        <label>¿Cómo te sientes hoy?</label>
+        <select id="emocion" onchange="actualizarFrase()">
+            <option value="">-- Selecciona una emoción --</option>
+            <option value="Alegre">Alegre 😃</option>
+            <option value="Triste">Triste 😔</option>
+            <option value="Cansado">Cansado 🥱</option>
+            <option value="Molesto">Molesto 😠</option>
+            <option value="Ansioso">Ansioso 😰</option>
+            <option value="Motivado">Motivado 🚀</option>
+            <option value="Aburrido">Aburrido 😑</option>
+            <option value="Agradecido">Agradecido 🙏</option>
+            <option value="Preocupado">Preocupado 😟</option>
+            <option value="Orgulloso">Orgulloso ⭐</option>
+        </select>
+
+        <div id="cajaFrase" class="frase-caja"></div>
+
+        <label>Mis 3 acciones para hoy:</label>
+        <input type="text" id="a1" placeholder="1. Acción escolar o emocional">
+        <input type="text" id="a2" placeholder="2. Acción escolar o emocional">
+        <input type="text" id="a3" placeholder="3. Acción escolar o emocional">
+
+        <button onclick="enviarDatos()">✅ Registrar Asistencia</button>
+        <p id="mensajeExito" class="success-msg">¡Asistencia enviada! Que tengas un gran día. ✨</p>
+    </div>
+
+    <script>
+        const frases = {
+            "Alegre": "¡Tu energía es contagiosa! Aprovecha este impulso para brillar.",
+            "Triste": "Se vale no estar bien. Mañana será una nueva oportunidad.",
+            "Cansado": "Escucha a tu cuerpo. Un paso a la vez también te lleva a la meta.",
+            "Molesto": "Respira profundo. No dejes que un momento amargo defina tu día.",
+            "Ansioso": "Concéntrate en el aquí y el ahora. Todo estará bien.",
+            "Motivado": "¡Esa es la actitud! Aprovecha este enfoque para conquistar tus metas.",
+            "Aburrido": "A veces la calma es una oportunidad para ser creativo.",
+            "Agradecido": "La gratitud transforma lo que tenemos en suficiente.",
+            "Preocupado": "No cargues con todo solo. Confía en tus capacidades.",
+            "Orgulloso": "¡Felicidades! Reconocer tus logros te hace más grande."
+        };
+
+        function actualizarFrase() {
+            const sel = document.getElementById('emocion').value;
+            const caja = document.getElementById('cajaFrase');
+            if(sel) {
+                caja.innerText = frases[sel];
+                caja.style.display = 'block';
+            } else {
+                caja.style.display = 'none';
+            }
+        }
+
+        function enviarDatos() {
+            const nombre = document.getElementById('nombre').value;
+            const emocion = document.getElementById('emocion').value;
+            const a1 = document.getElementById('a1').value;
+            const a2 = document.getElementById('a2').value;
+            const a3 = document.getElementById('a3').value;
+
+            if(!nombre || !emocion) {
+                alert("Por favor escribe tu nombre y elige una emoción.");
+                return;
+            }
+
+            // URL base del formulario (sin el /viewform)
+            const formURL = "https://docs.google.com/forms/d/e/1FAIpQLScyL7EwlWvuipdpNdCuscFAl-35k61oRErvc7gpKOdw60kuww/formResponse";
+            
+            // Creamos un formulario oculto para enviar los datos
+            const formData = new FormData();
+            formData.append("entry.676686131", nombre);
+            formData.append("entry.375224898", emocion);
+            formData.append("entry.729924200", a1);
+            formData.append("entry.1764392682", a2);
+            formData.append("entry.1393453133", a3);
+
+            // Envío silencioso
+            fetch(formURL, {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
+                document.getElementById('mensajeExito').style.display = 'block';
+                document.querySelector('button').disabled = true;
+                setTimeout(() => { location.reload(); }, 3000); // Recarga para el siguiente uso
+            }).catch(err => alert("Error al enviar. Inténtalo de nuevo."));
+        }
+    </script>
+
+    <script>
+        const emojisArr = ['😃', '😔', '🥱', '😠', '😰', '🚀', '😑', '🙏', '😟', '⭐', '❤️', '🔥', '🧠', '✨', '⚡'];
+        const fondo = document.getElementById('fondoEmojis');
+
+        function crearEmoji() {
+            const span = document.createElement('span');
+            span.classList.add('emoji-flotante');
+            
+            // Elegir emoji aleatorio
+            span.innerText = emojisArr[Math.floor(Math.random() * emojisArr.length)];
+            
+            // Posición horizontal aleatoria (0-100% de la anchura)
+            span.style.left = Math.random() * 100 + 'vw';
+            
+            // Duración aleatoria de la animación (más rápido, más lento)
+            span.style.animationDuration = Math.random() * 10 + 10 + 's'; // Entre 10s y 20s
+
+            // Tamaño aleatorio sutil
+            span.style.fontSize = Math.random() * 1.5 + 2 + 'rem'; // Entre 2rem y 3.5rem
+
+            // Añadir al fondo
+            fondo.appendChild(span);
+
+            // Borrar el emoji después de que termine la animación para no saturar la memoria
+            setTimeout(() => {
+                span.remove();
+            }, 20000); // Borrar después de 20s
+        }
+
+        // Crear un emoji cada segundo
+        setInterval(crearEmoji, 1000);
+
+        // Crear unos iniciales para que no se vea vacío al cargar
+        for(let i=0; i<10; i++) {
+            setTimeout(crearEmoji, i * 200);
+        }
+    </script>
 
 </body>
 </html>
+
 
